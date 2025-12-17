@@ -119,24 +119,29 @@
         /* Mobile styles */
         @media (max-width: 768px) {
             html, body {
-                background: black;
-                height: 100%;
-            }
-
-            body {
-                height: 100%;
+                background: black !important;
+                height: 100% !important;
                 overflow: hidden;
             }
 
+            body {
+                height: 100% !important;
+            }
+
             .split-container,
-            .center-text {
-                display: none;
+            .center-text,
+            .image-half,
+            .left-half,
+            .right-half {
+                display: none !important;
+                visibility: hidden !important;
             }
 
             .final-content {
-                opacity: 1;
+                opacity: 1 !important;
                 width: 90%;
                 padding: 1.5rem;
+                position: fixed;
             }
         }
     </style>
@@ -171,47 +176,50 @@
     </div>
 
     <script>
-        const leftHalf = document.querySelector('.left-half');
-        const rightHalf = document.querySelector('.right-half');
-        const centerText = document.querySelector('.center-text');
-        const finalContent = document.querySelector('.final-content');
+        // Only run animation on desktop (above 768px)
+        if (window.innerWidth > 768) {
+            const leftHalf = document.querySelector('.left-half');
+            const rightHalf = document.querySelector('.right-half');
+            const centerText = document.querySelector('.center-text');
+            const finalContent = document.querySelector('.final-content');
 
-        function updateSplit() {
-            const scrollTop = window.scrollY;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const scrollPercent = scrollTop / docHeight;
+            function updateSplit() {
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = scrollTop / docHeight;
 
-            // Map 0-70% scroll to 0-100% of the animation (inverted)
-            const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
+                // Map 0-70% scroll to 0-100% of the animation (inverted)
+                const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
 
-            // Maximum offset is 50% of viewport width (completely off screen)
-            const maxOffset = window.innerWidth * 0.5;
-            const offset = animationProgress * maxOffset;
+                // Maximum offset is 50% of viewport width (completely off screen)
+                const maxOffset = window.innerWidth * 0.5;
+                const offset = animationProgress * maxOffset;
 
-            leftHalf.style.transform = `translateX(-${offset}px)`;
-            rightHalf.style.transform = `translateX(${offset}px)`;
+                leftHalf.style.transform = `translateX(-${offset}px)`;
+                rightHalf.style.transform = `translateX(${offset}px)`;
 
-            // Transition to black at 98% scroll
-            if (scrollPercent >= 0.98) {
-                document.body.style.background = 'black';
-                document.documentElement.style.background = 'black';
-                leftHalf.style.opacity = '0';
-                rightHalf.style.opacity = '0';
-                centerText.style.opacity = '0';
-                finalContent.style.opacity = '1';
-            } else {
-                document.body.style.background = 'white';
-                document.documentElement.style.background = 'white';
-                leftHalf.style.opacity = '1';
-                rightHalf.style.opacity = '1';
-                centerText.style.opacity = '1';
-                finalContent.style.opacity = '0';
+                // Transition to black at 98% scroll
+                if (scrollPercent >= 0.98) {
+                    document.body.style.background = 'black';
+                    document.documentElement.style.background = 'black';
+                    leftHalf.style.opacity = '0';
+                    rightHalf.style.opacity = '0';
+                    centerText.style.opacity = '0';
+                    finalContent.style.opacity = '1';
+                } else {
+                    document.body.style.background = 'white';
+                    document.documentElement.style.background = 'white';
+                    leftHalf.style.opacity = '1';
+                    rightHalf.style.opacity = '1';
+                    centerText.style.opacity = '1';
+                    finalContent.style.opacity = '0';
+                }
             }
-        }
 
-        window.addEventListener('scroll', updateSplit);
-        window.addEventListener('resize', updateSplit);
-        updateSplit();
+            window.addEventListener('scroll', updateSplit);
+            window.addEventListener('resize', updateSplit);
+            updateSplit();
+        }
     </script>
 </body>
 </html>
