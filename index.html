@@ -175,10 +175,18 @@
     const centerText = document.querySelector(".center-text");
     const finalContent = document.querySelector(".final-content");
 
+    // Get stable viewport height using Visual Viewport API
+    function getViewportHeight() {
+      return window.visualViewport 
+        ? window.visualViewport.height 
+        : window.innerHeight;
+    }
+
     function updateSplit() {
       const scrollTop = window.scrollY;
+      const viewportHeight = getViewportHeight();
       const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
+        document.documentElement.scrollHeight - viewportHeight;
       const scrollPercent = scrollTop / docHeight;
 
       // Map 0-70% scroll to 0-100% of the animation (inverted)
@@ -210,6 +218,13 @@
 
     window.addEventListener("scroll", updateSplit);
     window.addEventListener("resize", updateSplit);
+    
+    // Listen to visual viewport changes for mobile browsers
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", updateSplit);
+      window.visualViewport.addEventListener("scroll", updateSplit);
+    }
+    
     updateSplit();
     
   </script>
