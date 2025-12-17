@@ -1,219 +1,229 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bridge Intelligence, Inc.</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Crimson+Text:wght@400;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bridge Intelligence, Inc.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Crimson+Text:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        html, body {
-            height: 100%;
-            background: white;
-            transition: background 0.1s ease-out;
-        }
+    html,
+    body {
+      height: 100%;
+      background: white;
+      transition: background 0.1s ease-out;
+    }
 
-        body {
-            height: 300vh;
-        }
+    body {
+      height: 300vh;
+    }
 
-        .split-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-        }
+    .split-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
-        .image-half {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background-image: url('green_transparent_hsv.png');
-            background-size: 100vw 48.88vw;
-            background-repeat: no-repeat;
-            transition: transform 0.05s ease-out, opacity 0.1s ease-out;
-            filter: invert(1);
-        }
+    .image-half {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      background-image: url("green_transparent_hsv.png");
+      background-size: 100vw 48.88vw;
+      background-repeat: no-repeat;
+      transition:
+        transform 0.05s ease-out,
+        opacity 0.1s ease-out;
+      filter: invert(1);
+    }
 
-        .left-half {
-            left: 0;
-            background-position: left center;
-        }
+    .left-half {
+      left: 0;
+      background-position: left center;
+    }
 
-        .right-half {
-            right: 0;
-            background-position: right center;
-        }
+    .right-half {
+      right: 0;
+      background-position: right center;
+    }
 
-        .center-text {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Playfair Display', serif;
-            font-weight: 400;
-            font-style: italic;
-            font-size: 4rem;
-            color: rgba(0, 0, 0, 0.7);
-            white-space: nowrap;
-            z-index: 1;
-            transition: opacity 0.1s ease-out;
-        }
+    .center-text {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Playfair Display", serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: 4rem;
+      color: rgba(0, 0, 0, 0.7);
+      white-space: nowrap;
+      z-index: 1;
+      transition: opacity 0.1s ease-out;
+    }
 
-        .image-half {
-            z-index: 2;
-        }
+    .image-half {
+      z-index: 2;
+    }
 
-        .final-content {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Crimson Text', serif;
-            font-weight: 400;
-            color: rgba(255, 255, 255, 0.7);
-            text-align: left;
-            width: 600px;
-            padding: 4rem 2rem;
-            opacity: 0;
-            transition: opacity 0.3s ease-out;
-            z-index: 10;
-        }
+    .final-content {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: "Crimson Text", serif;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.7);
+      text-align: left;
+      width: 600px;
+      padding: 4rem 2rem;
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      z-index: 10;
+    }
 
-        .final-content strong {
-            font-weight: 600;
-        }
+    .final-content strong {
+      font-weight: 600;
+    }
 
-        .final-content .mission {
-            font-size: 1rem;
-            line-height: 2;
-            margin-bottom: 1.5rem;
-            text-align: left;
-        }
+    .final-content .mission {
+      font-size: 1rem;
+      line-height: 2;
+      margin-bottom: 1.5rem;
+      text-align: left;
+    }
 
-        .final-content .bio {
-            font-size: 1rem;
-            line-height: 2;
-            margin-bottom: 1.5rem;
-        }
+    .final-content .bio {
+      font-size: 1rem;
+      line-height: 2;
+      margin-bottom: 1.5rem;
+    }
 
-        .final-content .signature {
-            font-size: 1rem;
-            margin-top: 1.5rem;
-            text-align: left;
-        }
+    .final-content .signature {
+      font-size: 1rem;
+      margin-top: 1.5rem;
+      text-align: left;
+    }
 
-        /* Mobile styles */
-        @media (max-width: 768px) {
-            html, body {
-                background: black !important;
-                height: 100% !important;
-                overflow: hidden;
-            }
+    /* Mobile styles */
+    @media (max-width: 768px) {
 
-            body {
-                height: 100% !important;
-            }
+      .center-text {
+        font-size: 2rem;
+      }
 
-            .split-container,
-            .center-text,
-            .image-half,
-            .left-half,
-            .right-half {
-                display: none !important;
-                visibility: hidden !important;
-            }
+      .final-content {
+    width: 90%;
+    padding: 3rem 1.5rem;
+    /* Don't force opacity - let JavaScript handle it */
+  }
 
-            .final-content {
+
+      /*.final-content {
                 opacity: 1 !important;
                 width: 90%;
                 padding: 3rem 1.5rem;
                 position: fixed;
-            }
-        }
-    </style>
+          }*/
+    }
+  </style>
 </head>
+
 <body>
-    <div class="center-text">Bridge Intelligence, Inc.</div>
-    <div class="split-container">
-        <div class="image-half left-half"></div>
-        <div class="image-half right-half"></div>
+  <div class="center-text">Bridge Intelligence, Inc.</div>
+  <div class="split-container">
+    <div class="image-half left-half"></div>
+    <div class="image-half right-half"></div>
+  </div>
+
+  <div class="final-content">
+    <div class="mission">
+      To reshape work and life.<br />
+      To enable adoption and knowledge exchange.<br />
+      To reward human - agent collaboration.<br />
     </div>
-
-    <div class="final-content">
-        <div class="mission">
-            To reshape work and life.<br>
-            To enable adoption and knowledge exchange.<br>
-            To reward human - agent collaboration.<br>
-        </div>
-        <div class="bio">
-            Previously, we've deployed software at <strong>Tesla</strong>, <strong>Optiver</strong>, <strong>QuantCo</strong>, and <strong>Martian</strong>, as well as at startups with <strong>millions</strong> of daily active <strong>users</strong>. We studied and did research at <strong>Harvard</strong>, <strong>Cambridge</strong>, and <strong>Berkeley</strong>, and <strong>published</strong> at leading AI conferences. Companies we founded, scaled to <strong>six figures</strong> and were <strong>acquired</strong>.<br>
-            Outside of work, we competed nationally in tennis and rowed for Harvard.<br>
-            We met through <strong>CDTM</strong> and <strong>Prod</strong> and have been best of friends ever since.
-        </div>
-        <div class="signature">
-            Join us.<br><br><br>
-            Calvin & Chris<br><br>
-            Bridge Intelligence, Inc.<br>
-            Palo Alto, CA
-        </div>
+    <div class="bio">
+      Previously, we've deployed software at <strong>Tesla</strong>,
+      <strong>Optiver</strong>, <strong>QuantCo</strong>, and
+      <strong>Martian</strong>, as well as at startups with
+      <strong>millions</strong> of daily active <strong>users</strong>. We
+      studied and did research at <strong>Harvard</strong>,
+      <strong>Cambridge</strong>, and <strong>Berkeley</strong>, and
+      <strong>published</strong> at leading AI conferences. Companies we
+      founded, scaled to <strong>six figures</strong> and were
+      <strong>acquired</strong>.<br />
+      Outside of work, we competed nationally in tennis and rowed for
+      Harvard.<br />
+      We met through <strong>CDTM</strong> and <strong>Prod</strong> and have
+      been best of friends ever since.
     </div>
+    <div class="signature">
+      Join us.<br /><br /><br />
+      Calvin & Chris<br /><br />
+      Bridge Intelligence, Inc.<br />
+      Palo Alto, CA
+    </div>
+  </div>
 
-    <script>
-        // Only run animation on desktop (above 768px)
-        if (window.innerWidth > 768) {
-            const leftHalf = document.querySelector('.left-half');
-            const rightHalf = document.querySelector('.right-half');
-            const centerText = document.querySelector('.center-text');
-            const finalContent = document.querySelector('.final-content');
+  <script>
+    const leftHalf = document.querySelector(".left-half");
+    const rightHalf = document.querySelector(".right-half");
+    const centerText = document.querySelector(".center-text");
+    const finalContent = document.querySelector(".final-content");
 
-            function updateSplit() {
-                const scrollTop = window.scrollY;
-                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-                const scrollPercent = scrollTop / docHeight;
+    function updateSplit() {
+      const scrollTop = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = scrollTop / docHeight;
 
-                // Map 0-70% scroll to 0-100% of the animation (inverted)
-                const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
+      // Map 0-70% scroll to 0-100% of the animation (inverted)
+      const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
 
-                // Maximum offset is 50% of viewport width (completely off screen)
-                const maxOffset = window.innerWidth * 0.5;
-                const offset = animationProgress * maxOffset;
+      // Maximum offset is 50% of viewport width (completely off screen)
+      const maxOffset = window.innerWidth * 0.5;
+      const offset = animationProgress * maxOffset;
 
-                leftHalf.style.transform = `translateX(-${offset}px)`;
-                rightHalf.style.transform = `translateX(${offset}px)`;
+      leftHalf.style.transform = `translateX(-${offset}px)`;
+      rightHalf.style.transform = `translateX(${offset}px)`;
 
-                // Transition to black at 98% scroll
-                if (scrollPercent >= 0.98) {
-                    document.body.style.background = 'black';
-                    document.documentElement.style.background = 'black';
-                    leftHalf.style.opacity = '0';
-                    rightHalf.style.opacity = '0';
-                    centerText.style.opacity = '0';
-                    finalContent.style.opacity = '1';
-                } else {
-                    document.body.style.background = 'white';
-                    document.documentElement.style.background = 'white';
-                    leftHalf.style.opacity = '1';
-                    rightHalf.style.opacity = '1';
-                    centerText.style.opacity = '1';
-                    finalContent.style.opacity = '0';
-                }
-            }
+      // Transition to black at 98% scroll
+      if (scrollPercent >= 0.96) {
+        document.body.style.background = "black";
+        document.documentElement.style.background = "black";
+        leftHalf.style.opacity = "0";
+        rightHalf.style.opacity = "0";
+        centerText.style.opacity = "0";
+        finalContent.style.opacity = "1";
+      } else {
+        document.body.style.background = "white";
+        document.documentElement.style.background = "white";
+        leftHalf.style.opacity = "1";
+        rightHalf.style.opacity = "1";
+        centerText.style.opacity = "1";
+        finalContent.style.opacity = "0";
+      }
+    }
 
-            window.addEventListener('scroll', updateSplit);
-            window.addEventListener('resize', updateSplit);
-            updateSplit();
-        }
-    </script>
+    window.addEventListener("scroll", updateSplit);
+    window.addEventListener("resize", updateSplit);
+    updateSplit();
+    
+  </script>
 </body>
+
 </html>
