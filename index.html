@@ -119,7 +119,6 @@
       text-align: left;
     }
 
-    /* Mobile styles */
     @media (max-width: 768px) {
 
       .center-text {
@@ -127,18 +126,9 @@
       }
 
       .final-content {
-    width: 90%;
-    padding: 3rem 1.5rem;
-    /* Don't force opacity - let JavaScript handle it */
-  }
-
-
-      /*.final-content {
-                opacity: 1 !important;
-                width: 90%;
-                padding: 3rem 1.5rem;
-                position: fixed;
-          }*/
+        width: 90%;
+        padding: 3rem 1.5rem;
+      }
     }
   </style>
 </head>
@@ -157,7 +147,7 @@
       To reward human - agent collaboration.<br />
     </div>
     <div class="bio">
-      Previously, we've deployed software at <strong>Tesla</strong>,
+      Previously, we deployed software at <strong>Tesla</strong>,
       <strong>Optiver</strong>, <strong>QuantCo</strong>, and
       <strong>Martian</strong>, as well as at startups with
       <strong>millions</strong> of daily active <strong>users</strong>. We
@@ -201,8 +191,7 @@
       leftHalf.style.transform = `translateX(-${offset}px)`;
       rightHalf.style.transform = `translateX(${offset}px)`;
 
-      // Transition to black at 98% scroll
-      if (scrollPercent >= 0.96) {
+      if (scrollPercent >= 0.96 ) {
         document.body.style.background = "black";
         document.documentElement.style.background = "black";
         leftHalf.style.opacity = "0";
