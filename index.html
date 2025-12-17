@@ -17,11 +17,17 @@
       box-sizing: border-box;
     }
 
+    html {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+
     html,
     body {
       height: 100%;
       background: white;
       transition: background 0.1s ease-out;
+      -webkit-overflow-scrolling: touch;
     }
 
     body {
@@ -49,6 +55,10 @@
         transform 0.05s ease-out,
         opacity 0.1s ease-out;
       filter: invert(1);
+      will-change: transform, opacity;
+      transform: translateZ(0);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .left-half {
@@ -64,7 +74,7 @@
     .center-text {
       position: fixed;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) translateZ(0);
       font-family: "Playfair Display", serif;
       font-weight: 400;
       font-style: italic;
@@ -73,6 +83,9 @@
       white-space: nowrap;
       z-index: 1;
       transition: opacity 0.1s ease-out;
+      will-change: opacity;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .image-half {
@@ -82,7 +95,7 @@
     .final-content {
       position: fixed;
       left: 50%;
-      transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%) translateZ(0);
       font-family: "Crimson Text", serif;
       font-weight: 400;
       color: rgba(255, 255, 255, 0.7);
@@ -92,6 +105,9 @@
       opacity: 0;
       transition: opacity 0.3s ease-out;
       z-index: 10;
+      will-change: opacity;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
     }
 
     .final-content strong {
@@ -188,6 +204,8 @@
         : window.innerHeight;
     }
 
+    let ticking = false;
+
     function updateSplit() {
       const scrollTop = window.scrollY;
       const viewportHeight = getViewportHeight();
@@ -202,8 +220,8 @@
       const maxOffset = window.innerWidth * 0.5;
       const offset = animationProgress * maxOffset;
 
-      leftHalf.style.transform = `translateX(-${offset}px)`;
-      rightHalf.style.transform = `translateX(${offset}px)`;
+      leftHalf.style.transform = `translateX(-${offset}px) translateZ(0)`;
+      rightHalf.style.transform = `translateX(${offset}px) translateZ(0)`;
 
       if (scrollPercent >= 0.96 ) {
         document.body.style.background = "black";
@@ -220,15 +238,24 @@
         centerText.style.opacity = "1";
         finalContent.style.opacity = "0";
       }
+      
+      ticking = false;
     }
 
-    window.addEventListener("scroll", updateSplit);
-    window.addEventListener("resize", updateSplit);
+    function requestTick() {
+      if (!ticking) {
+        requestAnimationFrame(updateSplit);
+        ticking = true;
+      }
+    }
+
+    window.addEventListener("scroll", requestTick, { passive: true });
+    window.addEventListener("resize", requestTick);
     
     // Listen to visual viewport changes for mobile browsers
     if (window.visualViewport) {
-      window.visualViewport.addEventListener("resize", updateSplit);
-      window.visualViewport.addEventListener("scroll", updateSplit);
+      window.visualViewport.addEventListener("resize", requestTick);
+      window.visualViewport.addEventListener("scroll", requestTick, { passive: true });
     }
     
     updateSplit();
