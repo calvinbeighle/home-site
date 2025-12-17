@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Image Reveal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,400&family=Crimson+Text:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background: white;
+            transition: background 0.1s ease-out;
+        }
+
+        body {
+            height: 300vh;
+        }
+
+        .split-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .image-half {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('../green_transparent_hsv.png');
+            background-size: 100vw 100vh;
+            background-repeat: no-repeat;
+            transition: transform 0.05s ease-out, opacity 0.1s ease-out;
+            filter: invert(1);
+        }
+
+        .left-half {
+            left: 0;
+            background-position: left center;
+        }
+
+        .right-half {
+            right: 0;
+            background-position: right center;
+        }
+
+        .center-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+            font-style: italic;
+            font-size: 4rem;
+            color: rgba(0, 0, 0, 0.7);
+            white-space: nowrap;
+            z-index: 1;
+            transition: opacity 0.1s ease-out;
+        }
+
+        .image-half {
+            z-index: 2;
+        }
+
+        .final-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Crimson Text', serif;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: left;
+            width: 600px;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-out;
+            z-index: 10;
+        }
+
+        .final-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            text-align: center;
+        }
+
+        .final-content .mission {
+            font-size: 1.1rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .final-content .bio {
+            font-size: 1rem;
+            line-height: 2;
+            margin-bottom: 1.5rem;
+        }
+
+        .final-content .signature {
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-text">Bridge Intelligence</div>
+    <div class="split-container">
+        <div class="image-half left-half"></div>
+        <div class="image-half right-half"></div>
+    </div>
+
+    <div class="final-content">
+        <h1>Bridge Intelligence Inc.</h1>
+        <div class="mission">
+            To build a future that rewards agent adoption.<br>
+            To keep humans in the loop to reshape knowledge work.<br>
+            To create the foundation for scalable human - agent collaboration.
+        </div>
+        <div class="bio">
+            We've built in industry at Tesla, Optiver, QuantCo, Martian, as well as at start-ups serving millions of daily active users.<br>
+            We studied and did research at Harvard, Cambridge, and Berkeley and published at major AI venues.<br>
+            We've scaled companies to six figures and sold them too.<br>
+            We had some fun along the way, playing tennis at a national level and walking onto Harvard's rowing team.<br>
+            We met through CDTM and Prod and have been best of friends ever since.<br>
+            We are now doubling down to bridge the Human - Agent Gap.
+        </div>
+        <div class="signature">
+            Join us.<br>
+            Calvin & Chris<br>
+            Palo Alto, CA
+        </div>
+    </div>
+
+    <script>
+        const leftHalf = document.querySelector('.left-half');
+        const rightHalf = document.querySelector('.right-half');
+        const centerText = document.querySelector('.center-text');
+        const finalContent = document.querySelector('.final-content');
+
+        function updateSplit() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
+
+            // Map 0-70% scroll to 0-100% of the animation (inverted)
+            const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
+
+            // Maximum offset is 50% of viewport width (completely off screen)
+            const maxOffset = window.innerWidth * 0.5;
+            const offset = animationProgress * maxOffset;
+
+            leftHalf.style.transform = `translateX(-${offset}px)`;
+            rightHalf.style.transform = `translateX(${offset}px)`;
+
+            // Transition to black at 98% scroll
+            if (scrollPercent >= 0.98) {
+                document.body.style.background = 'black';
+                document.documentElement.style.background = 'black';
+                leftHalf.style.opacity = '0';
+                rightHalf.style.opacity = '0';
+                centerText.style.opacity = '0';
+                finalContent.style.opacity = '1';
+            } else {
+                document.body.style.background = 'white';
+                document.documentElement.style.background = 'white';
+                leftHalf.style.opacity = '1';
+                rightHalf.style.opacity = '1';
+                centerText.style.opacity = '1';
+                finalContent.style.opacity = '0';
+            }
+        }
+
+        window.addEventListener('scroll', updateSplit);
+        window.addEventListener('resize', updateSplit);
+        updateSplit();
+    </script>
+</body>
+</html>

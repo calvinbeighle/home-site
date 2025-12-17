@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Image Reveal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            background: white;
+            transition: background 0.1s ease-out;
+        }
+
+        body {
+            height: 300vh;
+        }
+
+        .split-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .image-half {
+            position: absolute;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background-image: url('../green_transparent_hsv.png');
+            background-size: 100vw 100vh;
+            background-repeat: no-repeat;
+            transition: transform 0.05s ease-out, opacity 0.1s ease-out;
+            filter: invert(1);
+        }
+
+        .left-half {
+            left: 0;
+            background-position: left center;
+        }
+
+        .right-half {
+            right: 0;
+            background-position: right center;
+        }
+
+        .center-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'EB Garamond', serif;
+            font-weight: 400;
+            font-size: 4rem;
+            color: rgba(0, 0, 0, 0.7);
+            white-space: nowrap;
+            z-index: 1;
+            transition: opacity 0.1s ease-out;
+        }
+
+        .image-half {
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-text">Bridge Intelligence</div>
+    <div class="split-container">
+        <div class="image-half left-half"></div>
+        <div class="image-half right-half"></div>
+    </div>
+
+    <script>
+        const leftHalf = document.querySelector('.left-half');
+        const rightHalf = document.querySelector('.right-half');
+        const centerText = document.querySelector('.center-text');
+
+        function updateSplit() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollTop / docHeight;
+
+            // Map 0-70% scroll to 0-100% of the animation (inverted)
+            const animationProgress = 1 - Math.min(scrollPercent / 0.7, 1);
+
+            // Maximum offset is 50% of viewport width (completely off screen)
+            const maxOffset = window.innerWidth * 0.5;
+            const offset = animationProgress * maxOffset;
+
+            leftHalf.style.transform = `translateX(-${offset}px)`;
+            rightHalf.style.transform = `translateX(${offset}px)`;
+
+            // Transition to black at 98% scroll
+            if (scrollPercent >= 0.98) {
+                document.body.style.background = 'black';
+                document.documentElement.style.background = 'black';
+                leftHalf.style.opacity = '0';
+                rightHalf.style.opacity = '0';
+                centerText.style.opacity = '0';
+            } else {
+                document.body.style.background = 'white';
+                document.documentElement.style.background = 'white';
+                leftHalf.style.opacity = '1';
+                rightHalf.style.opacity = '1';
+                centerText.style.opacity = '1';
+            }
+        }
+
+        window.addEventListener('scroll', updateSplit);
+        window.addEventListener('resize', updateSplit);
+        updateSplit();
+    </script>
+</body>
+</html>
