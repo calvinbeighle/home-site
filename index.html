@@ -115,6 +115,30 @@
             margin-top: 1.5rem;
             text-align: left;
         }
+
+        /* Mobile styles */
+        @media (max-width: 768px) {
+            html, body {
+                background: black;
+                height: 100%;
+            }
+
+            body {
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .split-container,
+            .center-text {
+                display: none;
+            }
+
+            .final-content {
+                opacity: 1;
+                width: 90%;
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -140,7 +164,7 @@
             We are now doubling down to bridge the Human - Agent Gap.
         </div>
         <div class="signature">
-            Join us.<br><br>
+            Join us.<br><br><br>
             Calvin & Chris<br><br>
             Palo Alto, CA
         </div>
