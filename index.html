@@ -74,7 +74,12 @@
     .center-text {
       position: fixed;
       left: 50%;
-      transform: translate(-50%, -50%) translateZ(0);
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-50%) translateZ(0);
       font-family: "Playfair Display", serif;
       font-weight: 400;
       font-style: italic;
@@ -95,12 +100,19 @@
     .final-content {
       position: fixed;
       left: 50%;
-      transform: translate(-50%, -50%) translateZ(0);
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      transform: translateX(-50%) translateZ(0);
       font-family: "Crimson Text", serif;
       font-weight: 400;
       color: rgba(255, 255, 255, 0.7);
       text-align: left;
       width: 600px;
+      max-width: 90%;
       padding: 4rem 2rem;
       opacity: 0;
       transition: opacity 0.3s ease-out;
@@ -134,14 +146,8 @@
     }
 
     @media (max-width: 768px) {
-
       .center-text {
         font-size: 2rem;
-      }
-
-      .final-content {
-        width: 90%;
-        padding: 4rem 2rem;
       }
     }
   </style>
@@ -189,13 +195,7 @@
     const centerText = document.querySelector(".center-text");
     const finalContent = document.querySelector(".final-content");
 
-    // Lock initial viewport height to prevent text movement when browser UI collapses
-    const initialViewportHeight = window.innerHeight;
-    const centerY = initialViewportHeight / 2;
-    
-    // Set fixed top position for text elements
-    centerText.style.top = `${centerY}px`;
-    finalContent.style.top = `${centerY}px`;
+    // Text elements use flexbox with height: 100vh to match split-container positioning
 
     // Get stable viewport height using Visual Viewport API
     function getViewportHeight() {
