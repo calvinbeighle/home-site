@@ -223,19 +223,26 @@
       leftHalf.style.transform = `translateX(-${offset}px) translateZ(0)`;
       rightHalf.style.transform = `translateX(${offset}px) translateZ(0)`;
 
-      if (scrollPercent >= 0.96 ) {
+      // Fade out center text from 45% to 75% scroll
+      let centerTextOpacity = 1;
+      if (scrollPercent >= 0.45 && scrollPercent <= 0.75) {
+        centerTextOpacity = 1 - ((scrollPercent - 0.45) / (0.75 - 0.45));
+      } else if (scrollPercent > 0.75) {
+        centerTextOpacity = 0;
+      }
+      centerText.style.opacity = centerTextOpacity;
+
+      if (scrollPercent >= 0.96) {
         document.body.style.background = "black";
         document.documentElement.style.background = "black";
         leftHalf.style.opacity = "0";
         rightHalf.style.opacity = "0";
-        centerText.style.opacity = "0";
         finalContent.style.opacity = "1";
       } else {
         document.body.style.background = "white";
         document.documentElement.style.background = "white";
         leftHalf.style.opacity = "1";
         rightHalf.style.opacity = "1";
-        centerText.style.opacity = "1";
         finalContent.style.opacity = "0";
       }
       
