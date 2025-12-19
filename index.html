@@ -145,9 +145,52 @@
       text-align: left;
     }
 
+    .scroll-indicator {
+      position: fixed;
+      left: 50%;
+      bottom: 2rem;
+      transform: translateX(-50%) translateZ(0);
+      width: 36px;
+      height: 36px;
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+      z-index: 5;
+      pointer-events: none;
+      will-change: opacity, transform;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .scroll-indicator.visible {
+      opacity: 0.6;
+    }
+
+    .scroll-indicator svg {
+      width: 100%;
+      height: 100%;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-8px);
+      }
+      60% {
+        transform: translateY(-4px);
+      }
+    }
+
     @media (max-width: 768px) {
       .center-text {
         font-size: 2rem;
+      }
+      .scroll-indicator {
+        bottom: 1.5rem;
+        width: 28px;
+        height: 28px;
       }
     }
   </style>
@@ -158,6 +201,12 @@
   <div class="split-container">
     <div class="image-half left-half"></div>
     <div class="image-half right-half"></div>
+  </div>
+
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
   </div>
 
   <div class="final-content">
@@ -194,6 +243,7 @@
     const rightHalf = document.querySelector(".right-half");
     const centerText = document.querySelector(".center-text");
     const finalContent = document.querySelector(".final-content");
+    const scrollIndicator = document.querySelector(".scroll-indicator");
 
     // Text elements use flexbox with height: 100vh to match split-container positioning
 
@@ -205,6 +255,25 @@
     }
 
     let ticking = false;
+    let userHasScrolled = false;
+
+    // Show scroll indicator after 5 seconds (only if user hasn't scrolled yet)
+    setTimeout(() => {
+      if (!userHasScrolled && scrollIndicator) {
+        scrollIndicator.classList.add("visible");
+        scrollIndicator.style.color = "rgba(0, 0, 0, 0.7)";
+      }
+    }, 5000);
+
+    // Hide indicator when user scrolls
+    function handleScroll() {
+      if (!userHasScrolled) {
+        userHasScrolled = true;
+        if (scrollIndicator) {
+          scrollIndicator.classList.remove("visible");
+        }
+      }
+    }
 
     function updateSplit() {
       const scrollTop = window.scrollY;
@@ -223,6 +292,14 @@
       leftHalf.style.transform = `translateX(-${offset}px) translateZ(0)`;
       rightHalf.style.transform = `translateX(${offset}px) translateZ(0)`;
 
+      // Hide scroll indicator if user has scrolled (never show again)
+      if (scrollIndicator && userHasScrolled) {
+        scrollIndicator.style.opacity = "0";
+        scrollIndicator.classList.remove("visible");
+      } else if (scrollIndicator && scrollPercent > 0.1) {
+        scrollIndicator.style.opacity = Math.max(0, 0.6 * (1 - scrollPercent / 0.3));
+      }
+
       if (scrollPercent >= 0.96 ) {
         document.body.style.background = "black";
         document.documentElement.style.background = "black";
@@ -230,12 +307,17 @@
         rightHalf.style.opacity = "0";
         centerText.style.opacity = "0";
         finalContent.style.opacity = "1";
+        if (scrollIndicator) {
+          scrollIndicator.style.opacity = "0";
+        }
       } else {
         document.body.style.background = "white";
         document.documentElement.style.background = "white";
         leftHalf.style.opacity = "1";
         rightHalf.style.opacity = "1";
-        centerText.style.opacity = "1";
+        // Fade out text - stays visible until 30% scroll, then fades gradually from 30% to 70%
+        const textOpacity = scrollPercent < 0.3 ? 1 : Math.max(0, 1 - (scrollPercent - 0.3) / 0.4);
+        centerText.style.opacity = textOpacity;
         finalContent.style.opacity = "0";
       }
       
@@ -250,12 +332,14 @@
     }
 
     window.addEventListener("scroll", requestTick, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", requestTick);
     
     // Listen to visual viewport changes for mobile browsers
     if (window.visualViewport) {
       window.visualViewport.addEventListener("resize", requestTick);
       window.visualViewport.addEventListener("scroll", requestTick, { passive: true });
+      window.visualViewport.addEventListener("scroll", handleScroll, { passive: true });
     }
     
     updateSplit();
