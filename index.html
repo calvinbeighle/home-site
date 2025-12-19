@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Bridge Intelligence, Inc.</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -300,12 +301,20 @@
         scrollIndicator.style.opacity = Math.max(0, 0.6 * (1 - scrollPercent / 0.3));
       }
 
-      if (scrollPercent >= 0.96 ) {
+      // Fade out center text from 45% to 75% scroll
+      let centerTextOpacity = 1;
+      if (scrollPercent >= 0.45 && scrollPercent <= 0.75) {
+        centerTextOpacity = 1 - ((scrollPercent - 0.45) / (0.75 - 0.45));
+      } else if (scrollPercent > 0.75) {
+        centerTextOpacity = 0;
+      }
+      centerText.style.opacity = centerTextOpacity;
+
+      if (scrollPercent >= 0.96) {
         document.body.style.background = "black";
         document.documentElement.style.background = "black";
         leftHalf.style.opacity = "0";
         rightHalf.style.opacity = "0";
-        centerText.style.opacity = "0";
         finalContent.style.opacity = "1";
         if (scrollIndicator) {
           scrollIndicator.style.opacity = "0";
@@ -315,9 +324,6 @@
         document.documentElement.style.background = "white";
         leftHalf.style.opacity = "1";
         rightHalf.style.opacity = "1";
-        // Fade out text - stays visible until 30% scroll, then fades gradually from 30% to 70%
-        const textOpacity = scrollPercent < 0.3 ? 1 : Math.max(0, 1 - (scrollPercent - 0.3) / 0.4);
-        centerText.style.opacity = textOpacity;
         finalContent.style.opacity = "0";
       }
       
