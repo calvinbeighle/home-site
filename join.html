@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Join — Bridge Intelligence, Inc.</title>
+  <link rel="icon" type="image/svg+xml" href="icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      background: black;
+      font-family: "Crimson Text", serif;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .form-container {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: translateX(-50%);
+      width: 600px;
+      max-width: 90%;
+      transition: opacity 0.3s ease-out;
+    }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input-wrapper input {
+      flex: 1;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: rgba(255, 255, 255, 0.7);
+      font-family: "Crimson Text", serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 2;
+      padding: 0.5rem 1rem;
+      outline: none;
+    }
+
+    .input-wrapper input::placeholder {
+      color: rgba(255, 255, 255, 0.35);
+      font-family: "Crimson Text", serif;
+      font-size: 1rem;
+    }
+
+    .input-wrapper button {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-left: none;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 1.2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      line-height: 2;
+      transition: color 0.2s ease;
+    }
+
+    .input-wrapper button:hover {
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .confirmation {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: black;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-out;
+      font-family: "Crimson Text", serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 2;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .confirmation.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-container" id="formContainer">
+    <div class="input-wrapper">
+      <input type="text" id="contactInput" placeholder="Please input name and email" />
+      <button id="submitBtn" aria-label="Submit">→</button>
+    </div>
+  </div>
+
+  <div class="confirmation" id="confirmation">
+    We'll get back to you.
+  </div>
+
+  <script>
+    const formContainer = document.getElementById("formContainer");
+    const confirmation = document.getElementById("confirmation");
+    const submitBtn = document.getElementById("submitBtn");
+    const contactInput = document.getElementById("contactInput");
+
+    function submit() {
+      if (!contactInput.value.trim()) return;
+      formContainer.style.opacity = "0";
+      setTimeout(() => {
+        formContainer.style.display = "none";
+        confirmation.classList.add("visible");
+      }, 300);
+    }
+
+    submitBtn.addEventListener("click", submit);
+    contactInput.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") submit();
+    });
+  </script>
+</body>
+
+</html>
