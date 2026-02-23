@@ -128,6 +128,11 @@
     function submit() {
       if (!contactInput.value.trim()) return;
       formContainer.style.opacity = "0";
+      fetch("/api/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ contact: contactInput.value.trim() }),
+      });
       setTimeout(() => {
         formContainer.style.display = "none";
         confirmation.classList.add("visible");
