@@ -1,4 +1,16 @@
 {
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "privacywhoop.bridgeintelligence.co"
+        }
+      ],
+      "destination": "/privacy-whoop.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/(.*)",
