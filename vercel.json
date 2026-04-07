@@ -1,6 +1,16 @@
 {
   "rewrites": [
     {
+      "source": "/privacy",
+      "has": [
+        {
+          "type": "host",
+          "value": "privacywhoop.bridgeintelligence.co"
+        }
+      ],
+      "destination": "/privacy-whoop.html"
+    },
+    {
       "source": "/callback",
       "has": [
         {
@@ -22,6 +32,17 @@
     }
   ],
   "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "privacywhoop.bridgeintelligence.co"
+        }
+      ],
+      "destination": "/privacy",
+      "permanent": false
+    },
     {
       "source": "/(.*)",
       "has": [
